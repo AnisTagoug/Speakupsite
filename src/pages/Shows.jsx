@@ -22,11 +22,11 @@ import casamentoImg4 from '../assets/casamento/7c5c5ad425ecc528fc4defcb0e460908.
 import casamentoImg5 from '../assets/casamento/bf3cffcef2c1cc3269ea3696a593056c.jpg';
 import casamentoVideo from '../assets/casamento/casamento.mp4';
 import casamentoVideo2 from '../assets/casamento/WhatsApp Vidéo 2025-07-03 à 14.42.47_b9e37aa7.mp4';
-import conexaoImg from '../assets/conexao/conexao.jpg';
-import conexaoVideo1 from '../assets/conexao/1.mp4';
-import conexaoVideo2 from '../assets/conexao/2.mp4';
-import conexaoVideo3 from '../assets/conexao/3.mp4';
-import conexaoVideo4 from '../assets/conexao/4.mp4';
+import conexaoImg from '../assets/Conexao/conexao.jpg';
+import conexaoVideo1 from '../assets/Conexao/1.mp4';
+import conexaoVideo2 from '../assets/Conexao/2.mp4';
+import conexaoVideo3 from '../assets/Conexao/3.mp4';
+import conexaoVideo4 from '../assets/Conexao/4.mp4';
 
 export default function Shows() {
   const { t } = useTranslation();

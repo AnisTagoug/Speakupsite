@@ -9,7 +9,7 @@ export default function Events() {
   const [view, setView] = useState('calendar'); // 'calendar' or 'list'
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/events')
+    fetch('/api/events')
       .then(res => res.json())
       .then(setEvents);
   }, []);

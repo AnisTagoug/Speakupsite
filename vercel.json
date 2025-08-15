@@ -1,5 +1,20 @@
 {
+  "functions": {
+    "api/login.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/events.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/events/[id].js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

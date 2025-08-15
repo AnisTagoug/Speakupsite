@@ -29,7 +29,7 @@ export default function BackOffice() {
   }, [token]);
 
   const fetchEvents = async () => {
-    const res = await fetch('http://localhost:4000/api/events');
+    const res = await fetch('/api/events');
     setEvents(await res.json());
   };
 
@@ -54,7 +54,7 @@ export default function BackOffice() {
     setError('');
     try {
       const method = form.id ? 'PUT' : 'POST';
-      const url = form.id ? `http://localhost:4000/api/events/${form.id}` : 'http://localhost:4000/api/events';
+      const url = form.id ? `/api/events/${form.id}` : '/api/events';
       const res = await fetch(url, {
         method,
         headers: {
@@ -83,7 +83,7 @@ export default function BackOffice() {
 
   const handleDelete = async id => {
     if (!window.confirm('Delete this event?')) return;
-    await fetch(`http://localhost:4000/api/events/${id}`, {
+    await fetch(`/api/events/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });

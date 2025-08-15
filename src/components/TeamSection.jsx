@@ -5,7 +5,7 @@ import sopranoAvatar from '../assets/avatars/soprano.jpg';
 import adrianoAvatar from '../assets/avatars/Adriano.jpg';
 import liviaAvatar from '../assets/avatars/livia.jpg';
 import rafaAvatar from '../assets/avatars/rafa.jpg';
-import rosiAvatar from '../assets/avatars/Rosi.jpg';
+import rosiAvatar from '../assets/avatars/rosi.jpg';
 import minniAvatar from '../assets/avatars/minni.jpg';
 import arrianyAvatar from '../assets/avatars/Arriany.jpg';
 import neekoAvatar from '../assets/avatars/Neeko.jpg';
@@ -14,8 +14,8 @@ import medusaAvatar from '../assets/avatars/Medusa.jpg';
 import joaoAvatar from '../assets/avatars/joao.jpg';
 import kellyAvatar from '../assets/avatars/Kelly.jpg';
 import nengoAvatar from '../assets/avatars/nengo.jpg';
-import jaqueAvatar from '../assets/avatars/jaque.jpg';
-import benjaminAvatar from '../assets/avatars/benjamin.jpg';
+import jaqueAvatar from '../assets/avatars/Jaque.jpg';
+import benjaminAvatar from '../assets/avatars/Benjamin.jpg';
 import mutanoAvatar from '../assets/avatars/mutano.jpg';
 
 export default function TeamSection({ t }) {
