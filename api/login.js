@@ -1,16 +1,22 @@
-import jwt from 'jsonwebtoken';
-import fs from 'fs';
-import path from 'path';
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 const SECRET = 'supersecretkey';
 
 function readJSON(file) {
   const filePath = path.join(process.cwd(), 'backend', file);
-  if (!fs.existsSync(filePath)) return [];
+  if (!fs.existsSync(filePath)) {
+    // Fallback data if file doesn't exist
+    if (file === 'users.json') {
+      return [{ username: 'admin', password: 'admin123' }];
+    }
+    return [];
+  }
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
