@@ -1,6 +1,5 @@
 import bg4k from '../assets/bg-4k.jpg';
 import { useTranslation } from 'react-i18next';
-import su from '../assets/suuuu.png';
 
 export default function Home() {
   const { t } = useTranslation();

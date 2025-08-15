@@ -1,8 +1,9 @@
 import { useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { PlayIcon, PauseIcon, SpeakerWaveIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
+import liveRecordAudio from '../assets/live_record.mp3';
 
-const STREAM_URL = 'http://20.4.224.65:8080/auto';
+const STREAM_URL = liveRecordAudio;
 
 const AudioPlayer = forwardRef((props, ref) => {
   const audioRef = useRef(null);

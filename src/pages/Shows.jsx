@@ -1,6 +1,33 @@
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
+// Import all assets
+import juninaImg from '../assets/junina/junina.png';
+import juninaImg2 from '../assets/junina/176013dc8690b0a45bc2129d51fb5908.jpg';
+import juninaVideo from '../assets/junina/WhatsApp Vidéo 2025-07-03 à 14.32.57_8b2a9be2.mp4';
+import locutoresImg from '../assets/locutores/speakup.jpg';
+import apolloVideo from '../assets/locutores/Apollo.mp4';
+import adrianoVideo from '../assets/locutores/Dj Adriano.mp4';
+import gringoVideo from '../assets/locutores/Gringo.mp4';
+import neekoVideo from '../assets/locutores/Neeko.mp4';
+import nengoVideo from '../assets/locutores/nengo.mp4';
+import mafiososImg from '../assets/Mafiosos/mafioso.jpg';
+import mafiososVideo from '../assets/Mafiosos/mafiosos.mp4';
+import mafiososVideo2 from '../assets/Mafiosos/Vem com Speak UP na frequência MAFIOSOS ❤️♥️ LANÇANDO AS MELHORES ♥️.mp4';
+import mafiososVideo3 from '../assets/Mafiosos/Venha curtir que a noite só tá começando na sala dos Mafiosos- Speak UP ❤️😻 Sábado no melhor estilo..mp4';
+import casamentoImg from '../assets/casamento/raquelcasamento.png';
+import casamentoImg2 from '../assets/casamento/331ecdb92946b9d0408beb9f35b959f6.jpg';
+import casamentoImg3 from '../assets/casamento/3bc453057d7cbb9fc5a6532aca66f4c7.jpg';
+import casamentoImg4 from '../assets/casamento/7c5c5ad425ecc528fc4defcb0e460908.jpg';
+import casamentoImg5 from '../assets/casamento/bf3cffcef2c1cc3269ea3696a593056c.jpg';
+import casamentoVideo from '../assets/casamento/casamento.mp4';
+import casamentoVideo2 from '../assets/casamento/WhatsApp Vidéo 2025-07-03 à 14.42.47_b9e37aa7.mp4';
+import conexaoImg from '../assets/conexao/conexao.jpg';
+import conexaoVideo1 from '../assets/conexao/1.mp4';
+import conexaoVideo2 from '../assets/conexao/2.mp4';
+import conexaoVideo3 from '../assets/conexao/3.mp4';
+import conexaoVideo4 from '../assets/conexao/4.mp4';
+
 export default function Shows() {
   const { t } = useTranslation();
   const [openAlbumId, setOpenAlbumId] = useState(null);
@@ -14,9 +41,10 @@ export default function Shows() {
       description: t('event_junina_description'),
       date: '2025',
       media: [
-        { type: 'image', src: '/src/assets/junina/junina.png', alt: 'Casamento Cristopher & Raquel' },
-        { type: 'image', src: '/src/assets/junina/176013dc8690b0a45bc2129d51fb5908.jpg', alt: 'Casamento Cristopher & Raquel' },
-        { type: 'video', src: '/src/assets/junina/WhatsApp Vidéo 2025-07-03 à 14.32.57_8b2a9be2.mp4', alt: 'DJ ADRAIANO na festa Junina' }, ],
+        { type: 'image', src: juninaImg, alt: 'Festa Junina' },
+        { type: 'image', src: juninaImg2, alt: 'Festa Junina' },
+        { type: 'video', src: juninaVideo, alt: 'DJ ADRAIANO na festa Junina' },
+      ],
     },
     {
       id: 2,
@@ -24,12 +52,12 @@ export default function Shows() {
       description: t('locutores_description'),
       date: '2025',
       media: [
-        { type: 'image', src: '/src/assets/locutores/speakup.jpg', alt: 'Speak Up - Locutores' },
-        { type: 'video', src: '/src/assets/locutores/Apollo.mp4', alt: 'Dj Apollo' },
-        { type: 'video', src: '/src/assets/locutores/Dj Adriano.mp4', alt: 'Dj Adriano' },
-        { type: 'video', src: '/src/assets/locutores/Gringo.mp4', alt: 'Dj Gringo' },
-        { type: 'video', src: '/src/assets/locutores/Neeko.mp4', alt: 'Dj Neeko' },
-        { type: 'video', src: '/src/assets/locutores/nengo.mp4', alt: 'Dj Nengo' },
+        { type: 'image', src: locutoresImg, alt: 'Speak Up - Locutores' },
+        { type: 'video', src: apolloVideo, alt: 'Dj Apollo' },
+        { type: 'video', src: adrianoVideo, alt: 'Dj Adriano' },
+        { type: 'video', src: gringoVideo, alt: 'Dj Gringo' },
+        { type: 'video', src: neekoVideo, alt: 'Dj Neeko' },
+        { type: 'video', src: nengoVideo, alt: 'Dj Nengo' },
       ],
     },
     {
@@ -38,10 +66,10 @@ export default function Shows() {
       description: t('event_mafiosos_description'),
       date: '2025',
       media: [
-        { type: 'image', src: '/src/assets/Mafiosos/mafioso.jpg', alt: t('event_mafiosos_title') },
-        { type: 'video', src: '/src/assets/Mafiosos/mafiosos.mp4', alt: t('event_mafiosos_title') },
-        { type: 'video', src: '/src/assets/Mafiosos/Vem com Speak UP na frequência MAFIOSOS ❤️♥️ LANÇANDO AS MELHORES ♥️.mp4', alt: t('event_mafiosos_title') },
-        { type: 'video', src: '/src/assets/Mafiosos/Venha curtir que a noite só tá começando na sala dos Mafiosos- Speak UP ❤️😻 Sábado no melhor estilo..mp4', alt: t('event_mafiosos_title') },
+        { type: 'image', src: mafiososImg, alt: t('event_mafiosos_title') },
+        { type: 'video', src: mafiososVideo, alt: t('event_mafiosos_title') },
+        { type: 'video', src: mafiososVideo2, alt: t('event_mafiosos_title') },
+        { type: 'video', src: mafiososVideo3, alt: t('event_mafiosos_title') },
       ],
     },
    
@@ -51,13 +79,13 @@ export default function Shows() {
       description: t('event_casamento_description'),
       date: '2025',
       media: [
-        { type: 'image', src: '/src/assets/casamento/raquelcasamento.png', alt: 'Casamento Cristopher & Raquel' },
-        { type: 'image', src: '/src/assets/casamento/331ecdb92946b9d0408beb9f35b959f6.jpg', alt: 'Casamento Cristopher & Raquel' },
-        { type: 'image', src: '/src/assets/casamento/3bc453057d7cbb9fc5a6532aca66f4c7.jpg', alt: 'Casamento Cristopher & Raquel' },
-        { type: 'image', src: '/src/assets/casamento/7c5c5ad425ecc528fc4defcb0e460908.jpg', alt: 'Casamento Cristopher & Raquel' },
-        { type: 'image', src: '/src/assets/casamento/bf3cffcef2c1cc3269ea3696a593056c.jpg', alt: 'Casamento Cristopher & Raquel' },
-        { type: 'video', src: '/src/assets/casamento/casamento.mp4', alt: 'Vídeo do Casamento Cristopher & Raquel' },
-        { type: 'video', src: '/src/assets/casamento/WhatsApp Vidéo 2025-07-03 à 14.42.47_b9e37aa7.mp4', alt: 'Vídeo do Casamento Cristopher & Raquel' },
+        { type: 'image', src: casamentoImg, alt: 'Casamento Cristopher & Raquel' },
+        { type: 'image', src: casamentoImg2, alt: 'Casamento Cristopher & Raquel' },
+        { type: 'image', src: casamentoImg3, alt: 'Casamento Cristopher & Raquel' },
+        { type: 'image', src: casamentoImg4, alt: 'Casamento Cristopher & Raquel' },
+        { type: 'image', src: casamentoImg5, alt: 'Casamento Cristopher & Raquel' },
+        { type: 'video', src: casamentoVideo, alt: 'Vídeo do Casamento Cristopher & Raquel' },
+        { type: 'video', src: casamentoVideo2, alt: 'Vídeo do Casamento Cristopher & Raquel' },
       ],
     },
  
@@ -67,11 +95,11 @@ export default function Shows() {
       description: 'Uma festa que celebra a união de dois rádios amigos. Ritmix e Speak Up juntos, mostrando que não somos concorrentes: somos parceiros que se apoiam, compartilham energia e espalham diversão para todos',
       date: '2025',
       media: [
-        { type: 'image', src: '/src/assets/conexao/conexao.jpg', alt: 'Conexão Rádio Ritmix & Speak Up' },
-        { type: 'video', src: '/src/assets/conexao/1.mp4', alt: 'Dj Adriano' },
-        { type: 'video', src: '/src/assets/conexao/2.mp4', alt: 'Dj Andromeda' },
-        { type: 'video', src: '/src/assets/conexao/3.mp4', alt: 'Dj Paty-Frozen' },
-        { type: 'video', src: '/src/assets/conexao/4.mp4', alt: 'Dj Gringo' },
+        { type: 'image', src: conexaoImg, alt: 'Conexão Rádio Ritmix & Speak Up' },
+        { type: 'video', src: conexaoVideo1, alt: 'Dj Adriano' },
+        { type: 'video', src: conexaoVideo2, alt: 'Dj Andromeda' },
+        { type: 'video', src: conexaoVideo3, alt: 'Dj Paty-Frozen' },
+        { type: 'video', src: conexaoVideo4, alt: 'Dj Gringo' },
       ],
     },
  
