@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  radio-app:
+    build: .
+    ports:
+      - "5173:5173"
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./src/assets:/app/src/assets  # Mount assets for large files
+      - ./src:/app/src  # Mount source for hot reload
+      - ./index.html:/app/index.html
+      - ./vite.config.js:/app/vite.config.js
+    restart: unless-stopped
+
+  # Alternative setup with separate services (uncomment if preferred)
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "4000:4000"
+  #   environment:
+  #     - NODE_ENV=production
+  #   restart: unless-stopped
+  
+  # frontend:
+  #   build: .
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - backend
+  #   restart: unless-stopped
