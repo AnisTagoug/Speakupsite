@@ -29,7 +29,7 @@ export default function BackOffice() {
   }, [token]);
 
   const fetchEvents = async () => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const apiUrl = import.meta.env.VITE_API_URL;
     const res = await fetch(`${apiUrl}/api/events`);
     setEvents(await res.json());
   };
@@ -55,7 +55,7 @@ export default function BackOffice() {
     setError('');
     try {
       const method = form.id ? 'PUT' : 'POST';
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+      const apiUrl = import.meta.env.VITE_API_URL;
       const url = form.id ? `${apiUrl}/api/events/${form.id}` : `${apiUrl}/api/events`;
       const res = await fetch(url, {
         method,
@@ -85,7 +85,7 @@ export default function BackOffice() {
 
   const handleDelete = async id => {
     if (!window.confirm('Delete this event?')) return;
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const apiUrl = import.meta.env.VITE_API_URL;
     await fetch(`${apiUrl}/api/events/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
