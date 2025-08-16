@@ -22,11 +22,7 @@ import casamentoImg4 from '../assets/casamento/7c5c5ad425ecc528fc4defcb0e460908.
 import casamentoImg5 from '../assets/casamento/bf3cffcef2c1cc3269ea3696a593056c.jpg';
 import casamentoVideo from '../assets/casamento/casamento.mp4';
 import casamentoVideo2 from '../assets/casamento/WhatsApp Vidéo 2025-07-03 à 14.42.47_b9e37aa7.mp4';
-import conexaoImg from '../assets/Conexao/conexao.jpg';
-import conexaoVideo1 from '../assets/Conexao/1.mp4';
-import conexaoVideo2 from '../assets/Conexao/2.mp4';
-import conexaoVideo3 from '../assets/Conexao/3.mp4';
-import conexaoVideo4 from '../assets/Conexao/4.mp4';
+
 
 export default function Shows() {
   const { t } = useTranslation();
@@ -92,17 +88,18 @@ export default function Shows() {
     {
       id: 6,
       title: 'Conexão Rádio Ritmix & Speak Up',
-      description: 'Uma festa que celebra a união de dois rádios amigos. Ritmix e Speak Up juntos, mostrando que não somos concorrentes: somos parceiros que se apoiam, compartilham energia e espalham diversão para todos',
+      description:
+        'Uma festa que celebra a união de dois rádios amigos. Ritmix e Speak Up juntos, mostrando que não somos concorrentes: somos parceiros que se apoiam, compartilham energia e espalham diversão para todos',
       date: '2025',
       media: [
-        { type: 'image', src: conexaoImg, alt: 'Conexão Rádio Ritmix & Speak Up' },
-        { type: 'video', src: conexaoVideo1, alt: 'Dj Adriano' },
-        { type: 'video', src: conexaoVideo2, alt: 'Dj Andromeda' },
-        { type: 'video', src: conexaoVideo3, alt: 'Dj Paty-Frozen' },
-        { type: 'video', src: conexaoVideo4, alt: 'Dj Gringo' },
+        { type: 'image', src: '/media/conexao/conexao.jpg', alt: 'Conexão Rádio Ritmix & Speak Up' },
+        { type: 'video', src: '/media/conexao/1.mp4', alt: 'Dj Adriano' },
+        { type: 'video', src: '/media/conexao/2.mp4', alt: 'Dj Andromeda' },
+        { type: 'video', src: '/media/conexao/3.mp4', alt: 'Dj Paty-Frozen' },
+        { type: 'video', src: '/media/conexao/4.mp4', alt: 'Dj Gringo' },
       ],
     },
- 
+    
   ];
 
   // Find the selected event for the modal
