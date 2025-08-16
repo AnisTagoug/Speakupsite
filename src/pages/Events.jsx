@@ -9,7 +9,7 @@ export default function Events() {
   const [view, setView] = useState('calendar'); // 'calendar' or 'list'
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const apiUrl = import.meta.env.VITE_API_URL;
     fetch(`${apiUrl}/api/events`)
       .then(res => res.json())
       .then(data => {
