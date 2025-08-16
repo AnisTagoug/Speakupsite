@@ -1,29 +1,28 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
+const { Client } = require('pg');
+require('dotenv').config();
 
-const SECRET = 'supersecretkey';
+const SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
-function readJSON(file) {
-  const filePath = path.join(process.cwd(), 'backend', file);
-  if (!fs.existsSync(filePath)) {
-    // Fallback data if file doesn't exist
-    if (file === 'events.json') {
-      return [];
-    }
-    return [];
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
   }
-  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-}
+});
 
-function writeJSON(file, data) {
-  const filePath = path.join(process.cwd(), 'backend', file);
-  // Ensure backend directory exists
-  const dir = path.dirname(filePath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+// Connect to database
+client.connect().catch(err => console.error('Database connection error:', err));
+
+// Database query helper
+async function query(text, params) {
+  try {
+    const result = await client.query(text, params);
+    return result;
+  } catch (error) {
+    console.error('Database query error:', error);
+    throw error;
   }
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
 function authenticateToken(req) {
@@ -38,7 +37,7 @@ function authenticateToken(req) {
   }
 }
 
-module.exports = function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -50,48 +49,111 @@ module.exports = function handler(req, res) {
   }
 
   const { id } = req.query;
-  const events = readJSON('events.json');
 
-  if (req.method === 'PUT') {
-    // Edit event (protected)
-    const user = authenticateToken(req);
-    if (!user) return res.status(401).json({ message: 'Unauthorized' });
-
-    const idx = events.findIndex(e => e.id == id);
-    if (idx === -1) return res.status(404).json({ message: 'Event not found' });
-    
-    // Only allow editing if user created the event or is admin
-    if (events[idx].createdBy !== user.username && user.username !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized to edit this event' });
+  try {
+    if (req.method === 'GET') {
+      const result = await query('SELECT * FROM events WHERE id = $1', [id]);
+      
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'Event not found' });
+      }
+      
+      const event = {
+        id: result.rows[0].id,
+        title: result.rows[0].title,
+        date: result.rows[0].date,
+        startTime: result.rows[0].start_time,
+        endTime: result.rows[0].end_time,
+        description: result.rows[0].description,
+        sponsors: result.rows[0].sponsors,
+        image: result.rows[0].image,
+        room: result.rows[0].room,
+        createdBy: result.rows[0].created_by,
+        createdAt: result.rows[0].created_at,
+        updatedAt: result.rows[0].updated_at
+      };
+      
+      res.json(event);
+    } else if (req.method === 'PUT') {
+      const user = authenticateToken(req);
+      if (!user) return res.status(401).json({ message: 'Unauthorized' });
+      
+      // Check if event exists
+      const existingEvent = await query('SELECT * FROM events WHERE id = $1', [id]);
+      if (existingEvent.rows.length === 0) {
+        return res.status(404).json({ message: 'Event not found' });
+      }
+      
+      if (existingEvent.rows[0].created_by !== user.username && user.username !== 'admin') {
+        return res.status(403).json({ message: 'Not authorized to edit this event' });
+      }
+      
+      const result = await query(
+        `UPDATE events SET title = $1, date = $2, start_time = $3, end_time = $4, 
+         description = $5, sponsors = $6, image = $7, room = $8, updated_at = CURRENT_TIMESTAMP 
+         WHERE id = $9 RETURNING *`,
+        [
+          req.body.title,
+          req.body.date,
+          req.body.startTime,
+          req.body.endTime,
+          req.body.description || '',
+          req.body.sponsors || '',
+          req.body.image || '',
+          req.body.room || '',
+          id
+        ]
+      );
+      
+      const event = {
+        id: result.rows[0].id,
+        title: result.rows[0].title,
+        date: result.rows[0].date,
+        startTime: result.rows[0].start_time,
+        endTime: result.rows[0].end_time,
+        description: result.rows[0].description,
+        sponsors: result.rows[0].sponsors,
+        image: result.rows[0].image,
+        room: result.rows[0].room,
+        createdBy: result.rows[0].created_by,
+        createdAt: result.rows[0].created_at,
+        updatedAt: result.rows[0].updated_at
+      };
+      
+      res.json(event);
+    } else if (req.method === 'DELETE') {
+      const user = authenticateToken(req);
+      if (!user) return res.status(401).json({ message: 'Unauthorized' });
+      
+      // Get event before deletion
+      const existingEvent = await query('SELECT * FROM events WHERE id = $1', [id]);
+      if (existingEvent.rows.length === 0) {
+        return res.status(404).json({ message: 'Event not found' });
+      }
+      
+      // Delete the event
+      await query('DELETE FROM events WHERE id = $1', [id]);
+      
+      const deleted = {
+        id: existingEvent.rows[0].id,
+        title: existingEvent.rows[0].title,
+        date: existingEvent.rows[0].date,
+        startTime: existingEvent.rows[0].start_time,
+        endTime: existingEvent.rows[0].end_time,
+        description: existingEvent.rows[0].description,
+        sponsors: existingEvent.rows[0].sponsors,
+        image: existingEvent.rows[0].image,
+        room: existingEvent.rows[0].room,
+        createdBy: existingEvent.rows[0].created_by,
+        createdAt: existingEvent.rows[0].created_at
+      };
+      
+      res.json(deleted);
+    } else {
+      res.status(405).json({ message: 'Method not allowed' });
     }
-    
-    events[idx] = { 
-      ...events[idx], 
-      title: req.body.title,
-      date: req.body.date,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
-      description: req.body.description,
-      sponsors: req.body.sponsors || '',
-      image: req.body.image || '',
-      room: req.body.room || '',
-      updatedAt: new Date().toISOString()
-    };
-    writeJSON('events.json', events);
-    res.json(events[idx]);
-  } else if (req.method === 'DELETE') {
-    // Delete event (protected)
-    const user = authenticateToken(req);
-    if (!user) return res.status(401).json({ message: 'Unauthorized' });
-
-    const idx = events.findIndex(e => e.id == id);
-    if (idx === -1) return res.status(404).json({ message: 'Event not found' });
-    
-    const deleted = events[idx];
-    const updatedEvents = events.filter(e => e.id != id);
-    writeJSON('events.json', updatedEvents);
-    res.json(deleted);
-  } else {
-    res.status(405).json({ message: 'Method not allowed' });
+  } catch (error) {
+    console.error('API Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 }

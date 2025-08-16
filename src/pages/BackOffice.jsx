@@ -29,7 +29,8 @@ export default function BackOffice() {
   }, [token]);
 
   const fetchEvents = async () => {
-    const res = await fetch('/api/events');
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const res = await fetch(`${apiUrl}/api/events`);
     setEvents(await res.json());
   };
 
@@ -54,7 +55,8 @@ export default function BackOffice() {
     setError('');
     try {
       const method = form.id ? 'PUT' : 'POST';
-      const url = form.id ? `/api/events/${form.id}` : '/api/events';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+      const url = form.id ? `${apiUrl}/api/events/${form.id}` : `${apiUrl}/api/events`;
       const res = await fetch(url, {
         method,
         headers: {
@@ -83,7 +85,8 @@ export default function BackOffice() {
 
   const handleDelete = async id => {
     if (!window.confirm('Delete this event?')) return;
-    await fetch(`/api/events/${id}`, {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    await fetch(`${apiUrl}/api/events/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -233,8 +236,21 @@ export default function BackOffice() {
             tileContent={({ date, view }) => {
               if (view === 'month') {
                 const dateString = date.toISOString().slice(0, 10);
-                const hasEvent = events.some(ev => ev.date === dateString);
-                return hasEvent ? <div className="event-indicator"></div> : null;
+                const hasEvent = events.some(ev => {
+                  // Handle both ISO format and simple date format
+                  const eventDate = ev.date.includes('T') ? ev.date.slice(0, 10) : ev.date;
+                  return eventDate === dateString;
+                });
+                return hasEvent ? (
+                  <div 
+                    className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-green-500 rounded-full shadow-lg"
+                    style={{
+                      background: '#10b981',
+                      boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)',
+                      zIndex: 10
+                    }}
+                  ></div>
+                ) : null;
               }
             }}
           />

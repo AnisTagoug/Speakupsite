@@ -1,22 +1,31 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
+const { Client } = require('pg');
+require('dotenv').config();
 
-const SECRET = 'supersecretkey';
+const SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
-function readJSON(file) {
-  const filePath = path.join(process.cwd(), 'backend', file);
-  if (!fs.existsSync(filePath)) {
-    // Fallback data if file doesn't exist
-    if (file === 'users.json') {
-      return [{ username: 'admin', password: 'admin123' }];
-    }
-    return [];
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
   }
-  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+});
+
+// Connect to database
+client.connect().catch(err => console.error('Database connection error:', err));
+
+// Database query helper
+async function query(text, params) {
+  try {
+    const result = await client.query(text, params);
+    return result;
+  } catch (error) {
+    console.error('Database query error:', error);
+    throw error;
+  }
 }
 
-module.exports = function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -31,17 +40,23 @@ module.exports = function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  console.log('Login attempt:', req.body);
-  const { username, password } = req.body;
-  const users = readJSON('users.json');
-  console.log('Users loaded:', users);
-  const user = users.find(u => u.username === username && u.password === password);
-  console.log('User found:', user);
-  
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+  try {
+    console.log('Login attempt:', req.body);
+    const { username, password } = req.body;
+    
+    // Query database for user
+    const result = await query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
+    console.log('User query result:', result.rows.length > 0 ? 'User found' : 'User not found');
+    
+    if (result.rows.length === 0) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    
+    const user = result.rows[0];
+    const token = jwt.sign({ username: user.username }, SECRET, { expiresIn: '2h' });
+    res.json({ token });
+  } catch (error) {
+    console.error('Login API Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
-  
-  const token = jwt.sign({ username: user.username }, SECRET, { expiresIn: '2h' });
-  res.json({ token });
 }

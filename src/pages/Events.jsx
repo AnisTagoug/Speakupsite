@@ -9,14 +9,23 @@ export default function Events() {
   const [view, setView] = useState('calendar'); // 'calendar' or 'list'
 
   useEffect(() => {
-    fetch('/api/events')
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    fetch(`${apiUrl}/api/events`)
       .then(res => res.json())
-      .then(setEvents);
+      .then(data => {
+        console.log('Fetched events:', data);
+        setEvents(data);
+      })
+      .catch(err => console.error('Error fetching events:', err));
   }, []);
 
   // Find events for the selected date
   const selectedDateString = selectedDate.toISOString().slice(0, 10);
-  const eventsForDate = events.filter(ev => ev.date === selectedDateString);
+  const eventsForDate = events.filter(ev => {
+    // Handle both ISO format and simple date format
+    const eventDate = ev.date.includes('T') ? ev.date.slice(0, 10) : ev.date;
+    return eventDate === selectedDateString;
+  });
 
   // Sort events by date and time
   const sortedEvents = events.sort((a, b) => {
@@ -61,8 +70,21 @@ export default function Events() {
               tileContent={({ date, view }) => {
                 if (view === 'month') {
                   const dateString = date.toISOString().slice(0, 10);
-                  const hasEvent = events.some(ev => ev.date === dateString);
-                  return hasEvent ? <div className="event-indicator"></div> : null;
+                  const hasEvent = events.some(ev => {
+                    // Handle both ISO format and simple date format
+                    const eventDate = ev.date.includes('T') ? ev.date.slice(0, 10) : ev.date;
+                    return eventDate === dateString;
+                  });
+                  return hasEvent ? (
+                    <div 
+                      className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-green-500 rounded-full shadow-lg"
+                      style={{
+                        background: '#10b981',
+                        boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)',
+                        zIndex: 10
+                      }}
+                    ></div>
+                  ) : null;
                 }
               }}
             />
